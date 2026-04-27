@@ -5,11 +5,11 @@
 
 ### Datos del Alumno
 
-| Campo | Respuesta   |
-| :--- |:------------|
-| **Nombre** | Marina      |
-| **Apellido** | Riavdeneira |
-| **Legajo** | 63267       |
+| Campo | Respuesta  |
+| :--- |:-----------|
+| **Nombre** | Marina     |
+| **Apellido** | Rivadeneira |
+| **Legajo** | 63267      |
 
 > **Fecha de entrega:** 28 de Abril de 2026
 
