@@ -1,4 +1,4 @@
-package main.java.com.bibliotech.model;
+package com.bibliotech.model;
 
 public record Socio(
         int id,

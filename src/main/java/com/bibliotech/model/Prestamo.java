@@ -1,6 +1,7 @@
-package main.java.com.bibliotech.model;
+package com.bibliotech.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public record Prestamo(
         String id,
@@ -10,4 +11,7 @@ public record Prestamo(
         LocalDate fechaDevolucionPrevista,
         LocalDate fechaDevolucionReal
 ) {
+    public Optional<LocalDate> getFechaDevolucionReal() {
+        return Optional.ofNullable(fechaDevolucionReal);
+    }
 }

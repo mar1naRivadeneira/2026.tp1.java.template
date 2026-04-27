@@ -1,4 +1,4 @@
-package main.java.com.bibliotech.model;
+package com.bibliotech.model;
 
 public enum Categoria {
     FICCION, CIENCIA, HISTORIA, PROGRAMACION, TÉCNICO
