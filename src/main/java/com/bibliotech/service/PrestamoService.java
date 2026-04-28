@@ -2,13 +2,12 @@ package com.bibliotech.service;
 
 import com.bibliotech.model.*;
 import com.bibliotech.repository.*;
-import com.bibliotech.exception.BibliotecaException;
+import com.bibliotech.exception.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class PrestamoService {
-    // Inyección de dependencias (Punto 4 de la consigna)
     private final Repository<Recurso, String> recursoRepo;
     private final Repository<Socio, Integer> socioRepo;
     private final Repository<Prestamo, String> prestamoRepo;
@@ -23,24 +22,24 @@ public class PrestamoService {
 
     public void realizarPrestamo(String isbn, int socioId) throws BibliotecaException {
         Socio socio = socioRepo.buscarPorId(socioId)
-                .orElseThrow(() -> new BibliotecaException("Error: Socio no encontrado."));
+                .orElseThrow(() -> new SocioNoEncontradoException(socioId));
 
         Recurso recurso = recursoRepo.buscarPorId(isbn)
-                .orElseThrow(() -> new BibliotecaException("Error: Recurso no encontrado."));
+                .orElseThrow(() -> new RecursoNoEncontradoException(isbn));
 
         boolean yaPrestado = prestamoRepo.buscarTodos().stream()
-                .anyMatch(p -> p.recurso().isbn().equals(isbn) && p.fechaDevolucionReal() == null);
+                .anyMatch(p -> p.recurso().isbn().equals(isbn) && p.getFechaDevolucionReal().isEmpty());
 
         if (yaPrestado) {
-            throw new BibliotecaException("El recurso con ISBN " + isbn + " ya se encuentra prestado.");
+            throw new PrestamoNoPermitidoException("El recurso ya se encuentra prestado.");
         }
 
         long prestamosActivos = prestamoRepo.buscarTodos().stream()
-                .filter(p -> p.socio().id() == socioId && p.fechaDevolucionReal() == null)
+                .filter(p -> p.socio().id() == socioId && p.getFechaDevolucionReal().isEmpty())
                 .count();
 
         if (prestamosActivos >= socio.tipoSocio().getLimiteLibros()) {
-            throw new BibliotecaException("El socio " + socio.nombre() + " alcanzó su límite de "
+            throw new PrestamoNoPermitidoException("El socio " + socio.nombre() + " alcanzó su límite de "
                     + socio.tipoSocio().getLimiteLibros() + " préstamos.");
         }
 
@@ -49,7 +48,7 @@ public class PrestamoService {
                 socio,
                 recurso,
                 LocalDate.now(),
-                LocalDate.now().plusDays(7), // Plazo estándar de 7 días
+                LocalDate.now().plusDays(7),
                 null
         );
 
@@ -57,11 +56,11 @@ public class PrestamoService {
     }
 
     public void devolverPrestamo(String isbn) throws BibliotecaException {
-        // Buscar el préstamo activo para ese recurso
+
         Prestamo activo = prestamoRepo.buscarTodos().stream()
-                .filter(p -> p.recurso().isbn().equals(isbn) && p.fechaDevolucionReal() == null)
+                .filter(p -> p.recurso().isbn().equals(isbn) && p.getFechaDevolucionReal().isEmpty())
                 .findFirst()
-                .orElseThrow(() -> new BibliotecaException("No hay un préstamo activo para el recurso solicitado."));
+                .orElseThrow(() -> new RecursoNoEncontradoException("No hay un préstamo activo para el ISBN: " + isbn));
 
         LocalDate hoy = LocalDate.now();
 
