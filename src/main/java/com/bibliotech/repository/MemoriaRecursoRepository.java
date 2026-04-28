@@ -36,11 +36,7 @@ public class MemoriaRecursoRepository implements Repository<Recurso, String> {
 
     public List<Recurso> buscarPorCategoria(Categoria categoria) {
         return recursos.stream()
-                .filter(r -> {
-                    if (r instanceof LibroFisico libro) return libro.categoria().equals(categoria);
-                    if (r instanceof Ebook ebook) return ebook.categoria().equals(categoria);
-                    return false;
-                })
+                .filter(r -> r.categoria().equals(categoria))
                 .collect(Collectors.toList());
     }
 
