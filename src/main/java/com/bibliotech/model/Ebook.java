@@ -9,4 +9,9 @@ public record Ebook(
         String formatoArchivo,
         double tamanioMB
 ) implements Recurso {
+    @Override
+    public String mostrarInfo() {
+        return "[EBOOK] " + titulo() + " | " + autor() + " | " + categoria() +
+                " | " + formatoArchivo() + " | " + tamanioMB() + "MB | ISBN: " + isbn();
+    }
 }
