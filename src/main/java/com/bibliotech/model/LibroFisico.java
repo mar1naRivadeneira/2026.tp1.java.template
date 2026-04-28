@@ -5,6 +5,5 @@ public record LibroFisico(
         String titulo,
         String autor,
         int anio,
-        Categoria categoria,
-        boolean disponible
+        Categoria categoria
 ) implements Recurso {}

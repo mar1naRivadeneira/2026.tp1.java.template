@@ -1,4 +1,4 @@
-package main.java.com.bibliotech.exception;
+package com.bibliotech.exception;
 
 public class BibliotecaException extends Exception {
     public BibliotecaException(String mensaje) {
