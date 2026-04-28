@@ -10,6 +10,7 @@ public class MemoriaPrestamoRepository implements Repository<Prestamo, String> {
 
     @Override
     public void guardar(Prestamo prestamo) {
+        prestamos.removeIf(p -> p.id().equals(prestamo.id()));
         prestamos.add(prestamo);
     }
 
