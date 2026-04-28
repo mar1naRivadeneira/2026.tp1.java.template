@@ -6,4 +6,9 @@ public record LibroFisico(
         String autor,
         int anio,
         Categoria categoria
-) implements Recurso {}
+) implements Recurso {
+    @Override
+    public String mostrarInfo() {
+        return "[FÍSICO] " + titulo() + " | " + autor() + " | " + categoria() + " | ISBN: " + isbn();
+    }
+}

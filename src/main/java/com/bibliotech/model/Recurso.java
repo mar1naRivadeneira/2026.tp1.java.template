@@ -5,4 +5,5 @@ public interface Recurso {
     String titulo();
     String autor();
     Categoria categoria();
+    String mostrarInfo();
 }
